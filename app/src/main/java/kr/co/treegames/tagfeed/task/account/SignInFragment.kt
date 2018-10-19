@@ -1,7 +1,7 @@
 package kr.co.treegames.tagfeed.task.account
 
-import android.os.Bundle
-import android.view.View
+import kotlinx.android.synthetic.main.fragment_sign_in.*
+import kr.co.treegames.tagfeed.data.model.REGEX
 import kr.co.treegames.tagfeed.task.DefaultFragment
 
 /**
@@ -9,8 +9,17 @@ import kr.co.treegames.tagfeed.task.DefaultFragment
  *
  * Description :
  */
-class SignInFragment: DefaultFragment() {
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+class SignInFragment: DefaultFragment(), AccountContract.View.SignInView {
+    override fun getEmail(): String {
+        return edt_email.text.toString()
+    }
+    override fun getPassword(): String {
+        return edt_password.text.toString()
+    }
+    override fun verification(): Pair<Boolean, String?> {
+        if (!REGEX.EMAIL.toRegex().matches(edt_email.text)) {
+            return Pair(false, "이메일 형식을 확인해주세요.")
+        }
+        return Pair(true, null)
     }
 }

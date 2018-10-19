@@ -31,6 +31,7 @@ class MainActivity: DefaultActivity() {
 
         presenter = MainPresenter(
                 Injection.provideSharedPreferences(applicationContext),
+                Injection.provideAccountRepository(),
                 fragment
         )
     }

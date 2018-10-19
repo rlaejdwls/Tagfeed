@@ -13,5 +13,6 @@ interface MainContract {
         fun showMessage(message: String)
     }
     interface Presenter: BasePresenter {
+        fun signOut()
     }
 }

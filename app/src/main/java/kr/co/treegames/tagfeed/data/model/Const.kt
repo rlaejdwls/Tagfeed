@@ -18,3 +18,8 @@ interface Key {
         }
     }
 }
+interface REGEX {
+    companion object {
+        const val EMAIL: String = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"
+    }
+}

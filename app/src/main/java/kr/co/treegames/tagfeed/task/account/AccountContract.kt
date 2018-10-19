@@ -11,6 +11,16 @@ import kr.co.treegames.tagfeed.task.BaseView
  */
 interface AccountContract {
     interface View: BaseView<Presenter> {
+        interface SignInView {
+            fun getEmail(): String
+            fun getPassword(): String
+            fun verification(): Pair<Boolean, String?>
+        }
+        interface SignUpView {
+            fun getEmail(): String
+            fun getPassword(): String
+            fun verification(): Pair<Boolean, String?>
+        }
         fun setLoadingIndicator(isShow: Boolean)
         fun showMessage(message: String)
         fun startMainActivity()

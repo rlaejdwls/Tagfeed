@@ -12,10 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.fragment_account.*
-import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.App
 import kr.co.treegames.tagfeed.Injection
 import kr.co.treegames.tagfeed.R
+import kr.co.treegames.tagfeed.data.model.Account
 import kr.co.treegames.tagfeed.extension.onPageScrolled
 import kr.co.treegames.tagfeed.extension.onViewCreated
 import kr.co.treegames.tagfeed.task.DefaultFragment
@@ -29,8 +29,8 @@ import kr.co.treegames.tagfeed.widget.dialog.bundle.progress.solving.InfinitePro
  * Description : 로그인, 회원 가입 관련 뷰
  */
 class AccountFragment : DefaultFragment(), AccountContract.View {
-    private val minimumOffset = 0.4f
     override lateinit var presenter: AccountContract.Presenter
+    private val minimumOffset = 0.4f
 
     class TabInfo(val tab: TextView) {
         var tabSize = 0
@@ -40,19 +40,31 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
     private lateinit var listener: ViewPager.OnPageChangeListener
     private lateinit var progress: InfiniteProgressUIHandler
 
-    private var isSignInProcess: Boolean = false
+    private lateinit var signInView: AccountContract.View.SignInView
+    private lateinit var signUpView: AccountContract.View.SignUpView
 
     private val onClick = fun(view: View) {
         when(view.id) {
             R.id.btn_action -> {
-                setLoadingIndicator(true)
-                Handler(Looper.getMainLooper()).postDelayed({setLoadingIndicator(false)}, 3000)
-                when(isSignInProcess) {
-//                    true -> presenter.signIn(Account(edt_email.text.toString(), edt_password.text.toString()))
-//                    false -> presenter.signUp(Account(edt_email.text.toString(), edt_password.text.toString()))
+                when(pager.currentItem) {
+                    0 -> {
+                        val verification = signInView.verification()
+                        if (!verification.first) {
+                            Toast.makeText(activity, verification.second, Toast.LENGTH_SHORT).show()
+                        }
+                        presenter.signIn(Account(signInView.getEmail(), signInView.getPassword()))
+                    }
+                    1 -> {
+                        val verification = signUpView.verification()
+                        if (!verification.first) {
+                            Toast.makeText(activity, verification.second, Toast.LENGTH_SHORT).show()
+                        }
+                        presenter.signUp(Account(signUpView.getEmail(), signUpView.getPassword()))
+                    }
                 }
             }
             R.id.btn_google_sign_in -> {
+                Toast.makeText(activity, signInView.getEmail(), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -66,9 +78,7 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
         tabs = arrayOf(AccountFragment.TabInfo(txt_sign_in), TabInfo(txt_sign_up))
         for (i in 0..(tabs.size - 1)) {
             tabs[i].tab.onViewCreated { tabs[i].tabSize = it.width + (it.layoutParams as LinearLayout.LayoutParams).rightMargin }
-            tabs[i].tab.setOnClickListener {
-                pager.setCurrentItem(i, true)
-            }
+            tabs[i].tab.setOnClickListener { pager.setCurrentItem(i, true) }
         }
         dummy_margin.onViewCreated {
             it.layoutParams.width = pager.width - tabs[tabs.size - 1].tabSize
@@ -87,8 +97,8 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
         //서브 뷰 추가
         fragmentManager?.run {
             val adapter = AccountPagerAdapter(this).apply {
-                addFragment(Injection.provideFragment(SignInFragment::class.java), getString(R.string.title_sign_in))
-                addFragment(Injection.provideFragment(SignUpFragment::class.java), getString(R.string.title_sign_up))
+                addFragment(Injection.provideFragment(SignInFragment::class.java).apply { signInView = this }, getString(R.string.title_sign_in))
+                addFragment(Injection.provideFragment(SignUpFragment::class.java).apply { signUpView = this }, getString(R.string.title_sign_up))
             }
             pager.adapter = adapter
         }

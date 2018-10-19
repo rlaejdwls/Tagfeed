@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.ml.vision.FirebaseVision
@@ -41,7 +44,6 @@ class MainFragment: DefaultFragment(), MainContract.View {
                     progress_bar.visibility = View.GONE
                 }.addOnFailureListener {
                     progress_bar.visibility = View.GONE
-//                    Logger.e("ML Kit OCR Fail", it)
                 }
             }
             R.id.btn_ml_kit_landmark -> {
@@ -69,7 +71,6 @@ class MainFragment: DefaultFragment(), MainContract.View {
                             txt_test_data.text = builder.toString()
                         }.addOnFailureListener {
                             progress_bar.visibility = View.GONE
-//                            Logger.e("ML Kit Landmark Fail", it)
                         }
             }
             R.id.btn_test_data_clear -> {
@@ -99,5 +100,14 @@ class MainFragment: DefaultFragment(), MainContract.View {
 
     override fun showMessage(message: String) {
         activity?.run { Handler(Looper.getMainLooper()).post { Toast.makeText(this, message, Toast.LENGTH_LONG).show() } }
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            when(id) {
+                android.R.id.home -> presenter
+                else -> {}
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
