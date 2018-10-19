@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tagfeed</string>
+
+    <string name="common_email">Email</string>
+    <string name="common_password">Password</string>
+
+    <string name="btn_thinking">Thinking</string>
+    <string name="btn_exception">Exception</string>
+    <string name="btn_crash">Crash</string>
+    <string name="btn_test">Test</string>
+    <string name="btn_remote_config">Remote Config</string>
+    <string name="btn_analytics">Analytics</string>
+    <string name="btn_authentication">Authentication</string>
+    <string name="btn_ml_kit_ocr">MK Kit(OCR)</string>
+    <string name="btn_ml_kit_landmark">ML Kit(Landmark)</string>
+    <string name="btn_test_data_clear">Data Clear</string>
+    <string name="btn_start_camera">Start Camera</string>
+    <string name="btn_detect_shape">Detect Shape</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_sample">Sample</string>
+    <string name="btn_action">Action</string>
+    <string name="btn_clear">Clear</string>
+
+    <string name="title_sign_in">Sign In</string>
+    <string name="title_sign_up">Sign Up</string>
+
+    <string name="tab_sign_in">Sign In</string>
+    <string name="tab_sign_up">Sign Up</string>
+
+    <string name="edt_hint_email">@string/common_email</string>
+    <string name="edt_hint_password">@string/common_password</string>
+</resources>
