@@ -21,7 +21,6 @@ class SplashPresenter(private val preferences: SharedPreferencesDataSource,
     override fun start() {
     }
     override fun automatic() {
-        Logger.d("")
         view.setLoadingIndicator(true)
         repository.automatic({
             preferences.put(Key.SharedPreferences.UUID, it?.id)

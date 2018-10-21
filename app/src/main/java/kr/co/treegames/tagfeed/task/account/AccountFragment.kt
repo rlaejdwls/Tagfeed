@@ -50,38 +50,50 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
                     0 -> {
                         val verification = signInView.verification()
                         if (!verification.first) {
-                            Toast.makeText(activity, verification.second, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, verification.second, Toast.LENGTH_SHORT).show()
+                            return
                         }
                         presenter.signIn(Account(signInView.getEmail(), signInView.getPassword()))
                     }
                     1 -> {
                         val verification = signUpView.verification()
                         if (!verification.first) {
-                            Toast.makeText(activity, verification.second, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, verification.second, Toast.LENGTH_SHORT).show()
+                            return
                         }
                         presenter.signUp(Account(signUpView.getEmail(), signUpView.getPassword()))
                     }
                 }
             }
             R.id.btn_google_sign_in -> {
-                Toast.makeText(activity, signInView.getEmail(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, signInView.getEmail(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.apply {
+        //초기화
+        context?.apply {
             progress = InfiniteProgressUIHandler(this)
         }
-
         tabs = arrayOf(AccountFragment.TabInfo(txt_sign_in), TabInfo(txt_sign_up))
+
+        //이벤트
+        btn_action.setOnClickListener(onClick)
+        btn_google_sign_in.setOnClickListener(onClick)
+
         for (i in 0..(tabs.size - 1)) {
             tabs[i].tab.onViewCreated { tabs[i].tabSize = it.width + (it.layoutParams as LinearLayout.LayoutParams).rightMargin }
             tabs[i].tab.setOnClickListener { pager.setCurrentItem(i, true) }
         }
-        dummy_margin.onViewCreated {
-            it.layoutParams.width = pager.width - tabs[tabs.size - 1].tabSize
+        pager.onViewCreated {
+            //탭 이동을 위한 더미 뷰
+            val dummy: View = TextView(context)
+            dummy.layoutParams = LinearLayout.LayoutParams(it.width - tabs[tabs.size - 1].tabSize, LinearLayout.LayoutParams.WRAP_CONTENT)
+            dummy.visibility = View.INVISIBLE
+            layout_tabs.addView(dummy)
+            //탭 이전 사이즈 계산
             for (i in 0..(tabs.size - 1)) {
                 var preMenuSize = 0
                 for (cnt in 0..(i - 1)) {
@@ -90,10 +102,6 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
                 tabs[i].preTabSize = preMenuSize
             }
         }
-
-        btn_action.setOnClickListener(onClick)
-        btn_google_sign_in.setOnClickListener(onClick)
-
         //서브 뷰 추가
         fragmentManager?.run {
             val adapter = AccountPagerAdapter(this).apply {
@@ -104,9 +112,9 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
         }
         listener = pager.onPageScrolled { position, positionOffset, positionOffsetPixels ->
             //탭 글자색 변경
-            tabs[position].tab.setTextColor(Color.argb((255 * maxOf(1.0f - positionOffset, minimumOffset)).toInt(), 0, 0, 0))
+            tabs[position].tab.setTextColor(Color.argb((255 * maxOf(1.0f - positionOffset, minimumOffset)).toInt(), 255, 87, 87))
             if (tabs.size - 1 > position) {
-                tabs[position + 1].tab.setTextColor(Color.argb((255 * maxOf(positionOffset, minimumOffset)).toInt(), 0, 0, 0))
+                tabs[position + 1].tab.setTextColor(Color.argb((255 * maxOf(positionOffset, minimumOffset)).toInt(), 255, 87, 87))
             }
             //탭 자동 스크롤
             layout_scroll_tab.scrollX = tabs[position].preTabSize + (positionOffsetPixels * (tabs[position].tabSize.toFloat() / pager.width.toFloat())).toInt()

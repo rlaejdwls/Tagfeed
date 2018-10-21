@@ -21,7 +21,6 @@ class SplashFragment: DefaultFragment(), SplashContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        anim_logo.playAnimation()
         presenter.automatic()
     }
     override fun onResume() {
