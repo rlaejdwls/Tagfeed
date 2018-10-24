@@ -9,13 +9,13 @@ import kr.co.treegames.tagfeed.data.model.User
  *
  * Description :
  */
-class AccountRepository(private val remote: AccountDataSource): AccountDataSource {
+class AccountRepository(private val remote: AccountDataSource, private val local: AccountDataSource): AccountDataSource {
     companion object {
         private var INSTANCE: AccountRepository? = null
 
-        @JvmStatic fun getInstance(remote: AccountDataSource): AccountRepository {
+        @JvmStatic fun getInstance(remote: AccountDataSource, local: AccountDataSource): AccountRepository {
             return INSTANCE ?: synchronized(AccountRepository::javaClass) {
-                AccountRepository(remote).apply { INSTANCE = this }
+                AccountRepository(remote, local).apply { INSTANCE = this }
             }
         }
         @VisibleForTesting fun clearInstance() {

@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_splash.*
+import kr.co.treegames.tagfeed.manage.GoogleApiManager
 import kr.co.treegames.tagfeed.task.DefaultFragment
 import kr.co.treegames.tagfeed.task.account.AccountActivity
 import kr.co.treegames.tagfeed.task.main.MainActivity
@@ -27,6 +27,11 @@ class SplashFragment: DefaultFragment(), SplashContract.View {
         super.onResume()
         presenter.start()
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == GoogleApiManager.REQUEST_CODE) {
+            presenter.automatic()
+        }
+    }
 
     override fun setLoadingIndicator(isShow: Boolean) {
 //        if (isShow) {
@@ -38,6 +43,9 @@ class SplashFragment: DefaultFragment(), SplashContract.View {
     }
     override fun showMessage(message: String) {
         Handler(Looper.getMainLooper()).post { Toast.makeText(activity, message, Toast.LENGTH_LONG).show() }
+    }
+    override fun close() {
+        activity?.finish()
     }
     override fun startMainActivity() {
         startActivity(Intent(activity, MainActivity::class.java)

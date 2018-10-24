@@ -1,7 +1,6 @@
 package kr.co.treegames.tagfeed.task.account
 
 import kr.co.treegames.tagfeed.data.model.Account
-import kr.co.treegames.tagfeed.data.model.Key
 import kr.co.treegames.tagfeed.data.source.AccountRepository
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
 import kr.co.treegames.tagfeed.extension.checkPassword
@@ -30,7 +29,7 @@ class AccountPresenter(private val preferences: SharedPreferencesRepository,
         }
         view.setLoadingIndicator(true)
         repository.signIn(account, {
-            preferences.put(Key.SharedPreferences.UUID, it?.id)
+//            preferences.put(Key.SharedPreferences.UUID, it?.id)
             view.setLoadingIndicator(false)
             view.startMainActivity()
         }, { code, message ->
@@ -44,7 +43,7 @@ class AccountPresenter(private val preferences: SharedPreferencesRepository,
         }
         view.setLoadingIndicator(true)
         repository.signUp(account, {
-            preferences.put(Key.SharedPreferences.UUID, it?.id)
+//            preferences.put(Key.SharedPreferences.UUID, it?.id)
             view.setLoadingIndicator(false)
         }, { code, message ->
             view.showMessage("code:$code:message:$message")

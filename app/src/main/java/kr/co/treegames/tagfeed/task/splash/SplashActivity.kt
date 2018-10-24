@@ -1,5 +1,6 @@
 package kr.co.treegames.tagfeed.task.splash
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import kr.co.treegames.tagfeed.Injection
@@ -30,7 +31,11 @@ class SplashActivity: DefaultActivity() {
         presenter = SplashPresenter(
                 Injection.provideSharedPreferences(applicationContext),
                 Injection.provideAccountRepository(),
+                Injection.provideGoogleApiManager(this@SplashActivity),
                 fragment
         )
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        supportFragmentManager.findFragmentById(R.id.content)?.onActivityResult(requestCode, resultCode, data)
     }
 }

@@ -1,17 +1,17 @@
 package kr.co.treegames.tagfeed.task.splash
 
-import kr.co.treegames.core.manage.Logger
-import kr.co.treegames.tagfeed.data.model.Key
 import kr.co.treegames.tagfeed.data.source.AccountRepository
-import kr.co.treegames.tagfeed.data.source.SharedPreferencesDataSource
+import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
+import kr.co.treegames.tagfeed.manage.GoogleApiManager
 
 /**
  * Created by Hwang on 2018-09-05.
  *
  * Description :
  */
-class SplashPresenter(private val preferences: SharedPreferencesDataSource,
+class SplashPresenter(private val preferences: SharedPreferencesRepository,
                       private val repository: AccountRepository,
+                      private val api: GoogleApiManager,
                       val view: SplashContract.View)
     : SplashContract.Presenter {
     init {
@@ -21,15 +21,21 @@ class SplashPresenter(private val preferences: SharedPreferencesDataSource,
     override fun start() {
     }
     override fun automatic() {
-        view.setLoadingIndicator(true)
-        repository.automatic({
-            preferences.put(Key.SharedPreferences.UUID, it?.id)
-            view.setLoadingIndicator(false)
-            view.startMainActivity()
-        }, { code, message ->
-            view.showMessage("code:$code:message:$message")
-            view.setLoadingIndicator(false)
-            view.startAccountActivity()
+        api.isGooglePlayServicesAvailable({
+            view.setLoadingIndicator(true)
+            repository.automatic({
+                //            preferences.put(Key.SharedPreferences.UUID, it?.id)
+                view.setLoadingIndicator(false)
+                view.startMainActivity()
+            }, { code, message ->
+                view.showMessage("code:$code:message:$message")
+                view.setLoadingIndicator(false)
+                view.startAccountActivity()
+            })
+        }, {
+            view.close()
+        }, {
+            view.showMessage("This device does not support Google Play Services.")
         })
     }
 }

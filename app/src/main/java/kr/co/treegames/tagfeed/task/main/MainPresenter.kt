@@ -1,6 +1,5 @@
 package kr.co.treegames.tagfeed.task.main
 
-import kr.co.treegames.tagfeed.data.model.Key
 import kr.co.treegames.tagfeed.data.source.AccountRepository
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
 
@@ -18,7 +17,7 @@ class MainPresenter(private val preferences: SharedPreferencesRepository,
     }
 
     override fun start() {
-        view.showMessage("uuid:" + preferences.getString(Key.SharedPreferences.UUID))
+//        view.showMessage("uuid:" + preferences.getString(Key.SharedPreferences.UUID))
     }
     override fun signOut() {
         repository.signOut()

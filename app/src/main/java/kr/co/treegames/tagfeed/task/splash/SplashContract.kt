@@ -14,6 +14,7 @@ interface SplashContract {
         fun showMessage(message: String)
         fun startMainActivity()
         fun startAccountActivity()
+        fun close()
     }
     interface Presenter: BasePresenter {
         fun automatic()
