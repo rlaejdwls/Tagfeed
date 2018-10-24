@@ -22,5 +22,6 @@ class MainPresenter(private val preferences: SharedPreferencesRepository,
     }
     override fun signOut() {
         repository.signOut()
+        view.startAccountActivity()
     }
 }

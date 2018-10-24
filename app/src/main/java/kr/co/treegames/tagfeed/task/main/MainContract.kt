@@ -11,6 +11,7 @@ import kr.co.treegames.tagfeed.task.BaseView
 interface MainContract {
     interface View: BaseView<Presenter> {
         fun showMessage(message: String)
+        fun startAccountActivity()
     }
     interface Presenter: BasePresenter {
         fun signOut()

@@ -6,6 +6,8 @@ import kr.co.treegames.tagfeed.data.source.AccountRepository
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
 import kr.co.treegames.tagfeed.data.source.io.SharedPreferencesLocalDataSource
 import kr.co.treegames.tagfeed.data.source.remote.AccountRemoteDataSource
+import kr.co.treegames.tagfeed.manage.ResourceManager
+import kr.co.treegames.tagfeed.manage.Utilities
 import kr.co.treegames.tagfeed.task.DefaultFragment
 
 /**
@@ -19,6 +21,12 @@ object Injection {
     }
     fun provideSharedPreferences(context: Context): SharedPreferencesRepository {
         return SharedPreferencesRepository.getInstance(SharedPreferencesLocalDataSource.getInstance(context))
+    }
+    fun provideResourceManager(context: Context): ResourceManager {
+        return ResourceManager(context)
+    }
+    fun provideUtilities(context: Context): Utilities {
+        return Utilities(context)
     }
     fun <T: DefaultFragment> provideFragment(clazz: Class<T>): T {
         return clazz.newInstance()

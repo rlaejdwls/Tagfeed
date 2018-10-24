@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 /**
  * Created by Hwang on 2018-10-18.
  *
- * Description :
+ * Description : 로그인과 회원가입 뷰 페이저의 아답터
  */
 class AccountPagerAdapter(manager: FragmentManager): FragmentPagerAdapter(manager) {
     private val fragmentList: MutableList<Fragment> = ArrayList()

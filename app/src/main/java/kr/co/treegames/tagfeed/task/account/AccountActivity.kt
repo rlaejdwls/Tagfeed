@@ -9,7 +9,7 @@ import kr.co.treegames.tagfeed.task.replaceFragmentInActivity
 /**
  * Created by Hwang on 2018-09-03.
  *
- * Description :
+ * Description : Account Activity
  */
 class AccountActivity: DefaultActivity() {
     private lateinit var presenter: AccountPresenter
@@ -26,6 +26,7 @@ class AccountActivity: DefaultActivity() {
         presenter = AccountPresenter(
                 Injection.provideSharedPreferences(applicationContext),
                 Injection.provideAccountRepository(),
+                Injection.provideResourceManager(applicationContext),
                 fragment
         )
     }

@@ -31,4 +31,9 @@
 
     <string name="edt_hint_email">@string/common_email</string>
     <string name="edt_hint_password">@string/common_password</string>
+
+    <string name="error_the_data_is_empty">The data is empty</string>
+    <string name="error_this_field_is_required">This field is required</string>
+    <string name="error_please_enter_a_valid_email_address">Please enter a valid email address</string>
+    <string name="error_your_password_must_be_at_least_8_characters_long">Your password must be at least 8 characters long</string>
 </resources>

@@ -16,17 +16,18 @@ import kr.co.treegames.tagfeed.App
 import kr.co.treegames.tagfeed.Injection
 import kr.co.treegames.tagfeed.R
 import kr.co.treegames.tagfeed.data.model.Account
+import kr.co.treegames.tagfeed.extension.isEmail
 import kr.co.treegames.tagfeed.extension.onPageScrolled
 import kr.co.treegames.tagfeed.extension.onViewCreated
 import kr.co.treegames.tagfeed.task.DefaultFragment
 import kr.co.treegames.tagfeed.task.account.adapter.AccountPagerAdapter
 import kr.co.treegames.tagfeed.task.main.MainActivity
-import kr.co.treegames.tagfeed.widget.dialog.bundle.progress.solving.InfiniteProgressUIHandler
+import kr.co.treegames.tagfeed.widget.dialog.bundle.progress.infinite.InfiniteProgressUIHandler
 
 /**
  * Created by Hwang on 2018-09-03.
  *
- * Description : 로그인, 회원 가입 관련 뷰
+ * Description : 로그인, 회원가입 관련 뷰
  */
 class AccountFragment : DefaultFragment(), AccountContract.View {
     override lateinit var presenter: AccountContract.Presenter
@@ -47,22 +48,8 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
         when(view.id) {
             R.id.btn_action -> {
                 when(pager.currentItem) {
-                    0 -> {
-                        val verification = signInView.verification()
-                        if (!verification.first) {
-                            Toast.makeText(context, verification.second, Toast.LENGTH_SHORT).show()
-                            return
-                        }
-                        presenter.signIn(Account(signInView.getEmail(), signInView.getPassword()))
-                    }
-                    1 -> {
-                        val verification = signUpView.verification()
-                        if (!verification.first) {
-                            Toast.makeText(context, verification.second, Toast.LENGTH_SHORT).show()
-                            return
-                        }
-                        presenter.signUp(Account(signUpView.getEmail(), signUpView.getPassword()))
-                    }
+                    0 -> presenter.signIn(Account(signInView.getEmail(), signInView.getPassword()))
+                    1 -> presenter.signUp(Account(signUpView.getEmail(), signUpView.getPassword()))
                 }
             }
             R.id.btn_google_sign_in -> {
@@ -145,6 +132,31 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
     override fun showMessage(message: String) {
         Handler(Looper.getMainLooper()).post { Toast.makeText(activity, message, Toast.LENGTH_LONG).show() }
     }
+    override fun showEmailEmptyError() {
+        showEmailError(getString(R.string.error_this_field_is_required))
+    }
+    override fun showCheckingEmailFormat() {
+        showEmailError(getString(R.string.error_please_enter_a_valid_email_address))
+    }
+    override fun showPasswordEmptyError() {
+        showPasswordError(getString(R.string.error_this_field_is_required))
+    }
+    override fun showCheckingPasswordFormat() {
+        showPasswordError(getString(R.string.error_your_password_must_be_at_least_8_characters_long))
+    }
+    private fun showEmailError(error: String) {
+        when(pager.currentItem) {
+            0 -> signInView.showEmailError(error)
+            1 -> signUpView.showEmailError(error)
+        }
+    }
+    private fun showPasswordError(error: String) {
+        when(pager.currentItem) {
+            0 -> signInView.showPasswordError(error)
+            1 -> signUpView.showPasswordError(error)
+        }
+    }
+
     override fun startMainActivity() {
         startActivity(Intent(activity, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

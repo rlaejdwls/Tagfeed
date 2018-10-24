@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 /**
  * Created by Hwang on 2018-09-03.
  *
- * Description :
+ * Description : 보험(?)용 Default Activity와 Activity Extension
  */
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes resId: Int) {
     supportFragmentManager.transact {

@@ -13,7 +13,7 @@ import kr.co.treegames.core.util.StringUtils
 /**
  * Created by Hwang on 2018-08-31.
  *
- * Description :
+ * Description : Default Fragment
  */
 open class DefaultFragment : Fragment() {
     fun getColor(@ColorRes id: Int, theme: Resources.Theme): Int? {

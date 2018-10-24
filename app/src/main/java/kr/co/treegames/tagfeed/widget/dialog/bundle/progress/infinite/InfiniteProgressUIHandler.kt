@@ -1,4 +1,4 @@
-package kr.co.treegames.tagfeed.widget.dialog.bundle.progress.solving
+package kr.co.treegames.tagfeed.widget.dialog.bundle.progress.infinite
 
 import android.content.Context
 import android.os.Handler

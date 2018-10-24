@@ -1,5 +1,6 @@
 package kr.co.treegames.tagfeed.task.main
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.R
 import kr.co.treegames.tagfeed.task.DefaultFragment
+import kr.co.treegames.tagfeed.task.account.AccountActivity
 
 /**
  * Created by Hwang on 2018-09-05.
@@ -87,6 +89,8 @@ class MainFragment: DefaultFragment(), MainContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
         btn_ml_kit_ocr.setOnClickListener(onClick)
         btn_ml_kit_landmark.setOnClickListener(onClick)
         btn_test_data_clear.setOnClickListener(onClick)
@@ -101,11 +105,17 @@ class MainFragment: DefaultFragment(), MainContract.View {
     override fun showMessage(message: String) {
         activity?.run { Handler(Looper.getMainLooper()).post { Toast.makeText(this, message, Toast.LENGTH_LONG).show() } }
     }
+    override fun startAccountActivity() {
+        startActivity(Intent(activity, AccountActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        item?.let {
-            when(id) {
-                android.R.id.home -> presenter
-                else -> {}
+        item?.run {
+            when(itemId) {
+                android.R.id.home -> presenter.signOut()
             }
         }
         return super.onOptionsItemSelected(item)
