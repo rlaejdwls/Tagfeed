@@ -11,18 +11,24 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
+import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.fragment_account.*
+import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.App
 import kr.co.treegames.tagfeed.Injection
 import kr.co.treegames.tagfeed.R
 import kr.co.treegames.tagfeed.data.model.Account
-import kr.co.treegames.tagfeed.extension.isEmail
 import kr.co.treegames.tagfeed.extension.onPageScrolled
 import kr.co.treegames.tagfeed.extension.onViewCreated
 import kr.co.treegames.tagfeed.task.DefaultFragment
 import kr.co.treegames.tagfeed.task.account.adapter.AccountPagerAdapter
 import kr.co.treegames.tagfeed.task.main.MainActivity
 import kr.co.treegames.tagfeed.widget.dialog.bundle.progress.infinite.InfiniteProgressUIHandler
+
 
 /**
  * Created by Hwang on 2018-09-03.
@@ -31,6 +37,7 @@ import kr.co.treegames.tagfeed.widget.dialog.bundle.progress.infinite.InfinitePr
  */
 class AccountFragment : DefaultFragment(), AccountContract.View {
     override lateinit var presenter: AccountContract.Presenter
+    private val googleSignInRequestCode: Int = 10001
     private val minimumOffset = 0.4f
 
     class TabInfo(val tab: TextView) {
@@ -44,16 +51,16 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
     private lateinit var signInView: AccountContract.View.SignInView
     private lateinit var signUpView: AccountContract.View.SignUpView
 
+    private lateinit var googleSignInClient: GoogleSignInClient
+
     private val onClick = fun(view: View) {
         when(view.id) {
-            R.id.btn_action -> {
-                when(pager.currentItem) {
-                    0 -> presenter.signIn(Account(signInView.getEmail(), signInView.getPassword()))
-                    1 -> presenter.signUp(Account(signUpView.getEmail(), signUpView.getPassword()))
-                }
+            R.id.btn_action -> when(pager.currentItem) {
+                0 -> presenter.signInWithEmailAndPassword(Account(signInView.getEmail(), signInView.getPassword()))
+                1 -> presenter.signUp(Account(signUpView.getEmail(), signUpView.getPassword()))
             }
-            R.id.btn_google_sign_in -> {
-                Toast.makeText(context, signInView.getEmail(), Toast.LENGTH_SHORT).show()
+            R.id.btn_google_sign_in -> startActivityForResult(googleSignInClient.signInIntent, googleSignInRequestCode)
+            R.id.btn_github_sign_in -> {
             }
         }
     }
@@ -63,11 +70,16 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
         //초기화
         context?.apply {
             progress = InfiniteProgressUIHandler(this)
+            googleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build())
         }
         tabs = arrayOf(AccountFragment.TabInfo(txt_sign_in), TabInfo(txt_sign_up))
 
         //이벤트
         btn_action.setOnClickListener(onClick)
+        btn_google_sign_in.setOnClickListener(onClick)
         btn_google_sign_in.setOnClickListener(onClick)
 
         for (i in 0..(tabs.size - 1)) {
@@ -122,6 +134,29 @@ class AccountFragment : DefaultFragment(), AccountContract.View {
     override fun onDestroyView() {
         super.onDestroyView()
         pager.removeOnPageChangeListener(listener)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == googleSignInRequestCode) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            if (task.isSuccessful) {
+                task?.result?.idToken?.run { presenter.signInWithCredential(this) }
+            } else {
+                /*
+                https://developers.google.com/android/reference/com/google/android/gms/common/api/CommonStatusCodes
+                https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInStatusCodes
+
+                int	SIGN_IN_CANCELLED	The sign in was cancelled by the user.
+                int	SIGN_IN_CURRENTLY_IN_PROGRESS	A sign in process is currently in progress and the current one cannot continue.
+                int	SIGN_IN_FAILED	The sign in attempt didn't succeed with the current account.
+                 */
+                task?.exception?.let { e ->
+                    if (e is ApiException && e.statusCode != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
+                        Logger.e("Authentication failed.", e)
+                    }
+                }
+            }
+        }
     }
 
     override fun setLoadingIndicator(isShow: Boolean) {

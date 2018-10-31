@@ -22,6 +22,6 @@ interface Regex {
     companion object {
         const val EMAIL: String = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"
 //        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$"
-        const val PASSWORD: String = "^(?=.*?[a-zA-Z]).{8,}\$"
+        const val PASSWORD: String = "^(?=.*?[a-zA-Z0-9]).{6,}\$"
     }
 }

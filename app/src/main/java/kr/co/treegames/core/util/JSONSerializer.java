@@ -16,6 +16,7 @@ import java.io.IOException;
  * 작성자 : 황의택
  * 내용 : gson을 이용한 json 파일 직렬화 클래스
  */
+@Deprecated
 public class JSONSerializer {
     private static Gson gson;
 

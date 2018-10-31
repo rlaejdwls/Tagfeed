@@ -1,6 +1,7 @@
 package kr.co.treegames.tagfeed.data.source
 
 import androidx.annotation.VisibleForTesting
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kr.co.treegames.tagfeed.data.model.Account
 import kr.co.treegames.tagfeed.data.model.User
 
@@ -26,8 +27,11 @@ class AccountRepository(private val remote: AccountDataSource, private val local
     override fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         remote.automatic(success, failure)
     }
-    override fun signIn(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
-        remote.signIn(account, success, failure)
+    override fun signInWithEmailAndPassword(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+        remote.signInWithEmailAndPassword(account, success, failure)
+    }
+    override fun signInWithCredential(token: String, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+        remote.signInWithCredential(token, success, failure)
     }
     override fun signUp(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         remote.signUp(account, success, failure)

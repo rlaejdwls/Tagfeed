@@ -26,7 +26,9 @@ class AccountLocalDataSource: AccountDataSource {
 
     override fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
     }
-    override fun signIn(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    override fun signInWithEmailAndPassword(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    }
+    override fun signInWithCredential(token: String, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
     }
     override fun signUp(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
     }

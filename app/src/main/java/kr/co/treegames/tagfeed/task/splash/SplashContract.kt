@@ -11,10 +11,10 @@ import kr.co.treegames.tagfeed.task.BaseView
 interface SplashContract {
     interface View: BaseView<Presenter> {
         fun setLoadingIndicator(isShow: Boolean)
-        fun showMessage(message: String)
+        fun showGooglePlayNotSupported()
+        fun close()
         fun startMainActivity()
         fun startAccountActivity()
-        fun close()
     }
     interface Presenter: BasePresenter {
         fun automatic()

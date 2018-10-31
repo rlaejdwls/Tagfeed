@@ -1,5 +1,6 @@
 package kr.co.treegames.tagfeed.task.splash
 
+import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.data.source.AccountRepository
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
 import kr.co.treegames.tagfeed.manage.GoogleApiManager
@@ -24,18 +25,16 @@ class SplashPresenter(private val preferences: SharedPreferencesRepository,
         api.isGooglePlayServicesAvailable({
             view.setLoadingIndicator(true)
             repository.automatic({
-                //            preferences.put(Key.SharedPreferences.UUID, it?.id)
+//                preferences.put(Key.SharedPreferences.UUID, it?.id)
                 view.setLoadingIndicator(false)
                 view.startMainActivity()
             }, { code, message ->
-                view.showMessage("code:$code:message:$message")
+                Logger.d("code:$code:message:$message")
                 view.setLoadingIndicator(false)
                 view.startAccountActivity()
             })
         }, {
             view.close()
-        }, {
-            view.showMessage("This device does not support Google Play Services.")
-        })
+        }, view::showGooglePlayNotSupported)
     }
 }

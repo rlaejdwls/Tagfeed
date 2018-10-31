@@ -41,8 +41,8 @@ class SplashFragment: DefaultFragment(), SplashContract.View {
 //        }
 //        Handler(Looper.getMainLooper()).post { progress_bar.visibility = if(isShow) View.VISIBLE else View.GONE }
     }
-    override fun showMessage(message: String) {
-        Handler(Looper.getMainLooper()).post { Toast.makeText(activity, message, Toast.LENGTH_LONG).show() }
+    override fun showGooglePlayNotSupported() {
+        showMessage("This device does not support Google Play Services.")
     }
     override fun close() {
         activity?.finish()
@@ -58,5 +58,9 @@ class SplashFragment: DefaultFragment(), SplashContract.View {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
+    private fun showMessage(message: String) {
+        Handler(Looper.getMainLooper()).post { Toast.makeText(activity, message, Toast.LENGTH_LONG).show() }
     }
 }

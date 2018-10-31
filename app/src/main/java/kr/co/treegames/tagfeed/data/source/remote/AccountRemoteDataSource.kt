@@ -1,8 +1,10 @@
 package kr.co.treegames.tagfeed.data.source.remote
 
 import androidx.annotation.VisibleForTesting
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.GoogleAuthProvider
 import kr.co.treegames.tagfeed.data.model.Account
 import kr.co.treegames.tagfeed.data.model.User
 import kr.co.treegames.tagfeed.data.source.AccountDataSource
@@ -47,7 +49,7 @@ class AccountRemoteDataSource(private val auth: FirebaseAuth): AccountDataSource
     /**
      * Exception 참고 자료 : https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuthException
      */
-    override fun signIn(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    override fun signInWithEmailAndPassword(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         account?.run { auth.signInWithEmailAndPassword(email, pwd)
                 .addOnSuccessListener { automatic(success, failure) }
                 .addOnFailureListener { e -> when (e) {
@@ -58,6 +60,15 @@ class AccountRemoteDataSource(private val auth: FirebaseAuth): AccountDataSource
 //                    is FirebaseException -> Logger.d("message:${e.message}")
                     else -> failure(-3, e.message)
                 }}}
+    }
+    override fun signInWithCredential(token: String, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+        val credential = GoogleAuthProvider.getCredential(token, null)
+        auth.signInWithCredential(credential)
+                .addOnSuccessListener { automatic(success, failure) }
+                .addOnFailureListener { e -> when (e) {
+                    is FirebaseAuthException -> failure(e.errorCode.hashCode(), e.message)
+                    else -> failure(-4, e.message)
+                }}
     }
     override fun signUp(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         account?.run { auth.createUserWithEmailAndPassword(email, pwd)

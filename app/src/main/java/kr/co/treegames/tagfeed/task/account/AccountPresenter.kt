@@ -1,5 +1,7 @@
 package kr.co.treegames.tagfeed.task.account
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.data.model.Account
 import kr.co.treegames.tagfeed.data.source.AccountRepository
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
@@ -23,19 +25,22 @@ class AccountPresenter(private val preferences: SharedPreferencesRepository,
 
     override fun start() {
     }
-    override fun signIn(account: Account) {
+    override fun signInWithEmailAndPassword(account: Account) {
         if (!validation(account.email, account.pwd)) {
             return
         }
         view.setLoadingIndicator(true)
-        repository.signIn(account, {
+        repository.signInWithEmailAndPassword(account, {
 //            preferences.put(Key.SharedPreferences.UUID, it?.id)
             view.setLoadingIndicator(false)
             view.startMainActivity()
         }, { code, message ->
-            view.showMessage("code:$code:message:$message")
+            Logger.d("code:$code:message:$message")
             view.setLoadingIndicator(false)
         })
+    }
+    override fun signInWithCredential(token: String) {
+
     }
     override fun signUp(account: Account) {
         if (!validation(account.email, account.pwd)) {
@@ -46,7 +51,7 @@ class AccountPresenter(private val preferences: SharedPreferencesRepository,
 //            preferences.put(Key.SharedPreferences.UUID, it?.id)
             view.setLoadingIndicator(false)
         }, { code, message ->
-            view.showMessage("code:$code:message:$message")
+            Logger.d("code:$code:message:$message")
             view.setLoadingIndicator(false)
         })
     }

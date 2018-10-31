@@ -1,12 +1,5 @@
 package kr.co.treegames.core.util;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-
-import kr.co.treegames.core.R;
-import kr.co.treegames.core.manage.Logger;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,11 +11,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
+import kr.co.treegames.core.manage.Logger;
+
 /**
  * Created by Hwang on 2016-12-06.
  * 작성자 : 황의택
  * 내용 : 기타 잡다구리 유틸
  */
+@Deprecated
 public class Utils {
     /*
     포멧
@@ -52,7 +48,7 @@ public class Utils {
             try {
                 result.put(key, map.get(key));
             } catch (JSONException e) {
-                Logger.printStackTrace(e);
+                Logger.Companion.e(e.getMessage());
             }
         }
         return result;
@@ -73,7 +69,7 @@ public class Utils {
 
                     return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 } catch (ParseException e) {
-                    Logger.printStackTrace(e);
+                    Logger.Companion.e(e.getMessage());
                 }
             }
         }
@@ -91,7 +87,7 @@ public class Utils {
 
                     return calendar.get(Calendar.DAY_OF_MONTH);
                 } catch (ParseException e) {
-                    Logger.printStackTrace(e);
+                    Logger.Companion.e(e.getMessage());
                 }
             }
         }

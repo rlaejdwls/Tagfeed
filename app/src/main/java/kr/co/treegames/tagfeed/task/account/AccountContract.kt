@@ -1,5 +1,6 @@
 package kr.co.treegames.tagfeed.task.account
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kr.co.treegames.tagfeed.data.model.Account
 import kr.co.treegames.tagfeed.task.BasePresenter
 import kr.co.treegames.tagfeed.task.BaseView
@@ -32,7 +33,8 @@ interface AccountContract {
         fun startMainActivity()
     }
     interface Presenter: BasePresenter {
-        fun signIn(account: Account)
+        fun signInWithEmailAndPassword(account: Account)
+        fun signInWithCredential(token: String)
         fun signUp(account: Account)
         fun validation(email: String, password: String): Boolean
     }

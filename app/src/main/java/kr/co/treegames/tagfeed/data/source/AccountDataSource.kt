@@ -10,7 +10,8 @@ import kr.co.treegames.tagfeed.data.model.User
  */
 interface AccountDataSource {
     fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit)
-    fun signIn(account: Account? = null, success: (User?) -> Unit, failure: (Int, String?) -> Unit)
+    fun signInWithEmailAndPassword(account: Account? = null, success: (User?) -> Unit, failure: (Int, String?) -> Unit)
+    fun signInWithCredential(token: String, success: (User?) -> Unit, failure: (Int, String?) -> Unit)
     fun signUp(account: Account? = null, success: (User?) -> Unit, failure: (Int, String?) -> Unit)
     fun signOut()
 }

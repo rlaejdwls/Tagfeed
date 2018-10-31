@@ -3,7 +3,6 @@ package kr.co.treegames.core.manage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,11 +13,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import androidx.fragment.app.Fragment;
+
 /**
  * Created by Hwang on 2016-11-08.
  * 작성자 : 황의택
  * 내용 : 나열되어 있는 명령어(Activity, Method 등..)를 순차적으로 실행시켜주는 클래스
  */
+@Deprecated
 public class Navigator {
     public static final String TYPE_ACTIVITY = "ACTIVITY";
     public static final String TYPE_METHOD = "METHOD";

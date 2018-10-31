@@ -1,7 +1,10 @@
 package kr.co.treegames.core.manage
 
+import android.app.ActivityManager
 import android.content.Context
+import android.content.Context.ACTIVITY_SERVICE
 import android.os.Build
+import androidx.core.content.ContextCompat.getSystemService
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -89,7 +92,22 @@ class ExceptionHandler(val context: Context): Thread.UncaughtExceptionHandler {
         firmwareOfAndroid.append(Build.VERSION.INCREMENTAL)
 
         Logger.e(errorContent.toString())
-
+        Thread {
+                val actMng: ActivityManager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+                val strProcessName = context.applicationInfo.processName
+                while(true) {
+                    val list: List<ActivityManager.RunningAppProcessInfo> = actMng.runningAppProcesses
+                    for(rap in list) {
+                        if(rap.processName == strProcessName) {
+                            if(rap.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
+                                actMng.restartPackage(context.packageName)
+                            }
+                            Thread.yield()
+                            break
+                        }
+                    }
+                }
+            }.start()
 //        Logger.printStackTrace(errorContent.toString(), e)
 //        notifyDialog(errorContent, causeOfError, deviceInformation, firmwareOfAndroid)
     }
