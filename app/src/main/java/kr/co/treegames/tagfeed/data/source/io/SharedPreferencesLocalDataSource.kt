@@ -14,16 +14,16 @@ import kr.co.treegames.tagfeed.data.source.SharedPreferencesDataSource
  */
 class SharedPreferencesLocalDataSource(private val preferences: SharedPreferences): SharedPreferencesDataSource {
     companion object {
-        private var INSTANCE: SharedPreferencesLocalDataSource? = null
+        private var instance: SharedPreferencesLocalDataSource? = null
 
         @JvmStatic fun getInstance(context: Context): SharedPreferencesLocalDataSource {
-            return INSTANCE ?: synchronized(SharedPreferencesLocalDataSource::javaClass) {
+            return instance ?: synchronized(SharedPreferencesLocalDataSource::javaClass) {
                 SharedPreferencesLocalDataSource(context.getSharedPreferences(Key.SharedPreferences.DEFAULT_NAME,
-                        Activity.MODE_PRIVATE)).apply { INSTANCE = this }
+                        Activity.MODE_PRIVATE)).apply { instance = this }
             }
         }
         @VisibleForTesting fun clearInstance() {
-            INSTANCE = null
+            instance = null
         }
     }
     override fun put(key: String, strValue: String?, intValue: Int?, boolValue: Boolean?) {

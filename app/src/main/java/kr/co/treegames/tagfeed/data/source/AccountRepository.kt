@@ -1,28 +1,31 @@
 package kr.co.treegames.tagfeed.data.source
 
-import androidx.annotation.VisibleForTesting
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kr.co.treegames.tagfeed.data.model.Account
 import kr.co.treegames.tagfeed.data.model.User
+import kr.co.treegames.tagfeed.data.source.db.AccountLocalDataSource
+import kr.co.treegames.tagfeed.data.source.remote.AccountRemoteDataSource
 
 /**
  * Created by Hwang on 2018-09-03.
  *
  * Description :
  */
-class AccountRepository(private val remote: AccountDataSource, private val local: AccountDataSource): AccountDataSource {
-    companion object {
-        private var INSTANCE: AccountRepository? = null
-
-        @JvmStatic fun getInstance(remote: AccountDataSource, local: AccountDataSource): AccountRepository {
-            return INSTANCE ?: synchronized(AccountRepository::javaClass) {
-                AccountRepository(remote, local).apply { INSTANCE = this }
-            }
-        }
-        @VisibleForTesting fun clearInstance() {
-            INSTANCE = null
-        }
-    }
+object AccountRepository: AccountDataSource {
+    private val remote: AccountDataSource = AccountRemoteDataSource
+    private val local: AccountDataSource = AccountLocalDataSource
+//class AccountRepository(private val remote: AccountDataSource, private val local: AccountDataSource): AccountDataSource {
+//    companion object {
+//        private var INSTANCE: AccountRepository? = null
+//
+//        @JvmStatic fun getInstance(remote: AccountDataSource, local: AccountDataSource): AccountRepository {
+//            return INSTANCE ?: synchronized(AccountRepository::javaClass) {
+//                AccountRepository(remote, local).apply { INSTANCE = this }
+//            }
+//        }
+//        @VisibleForTesting fun clearInstance() {
+//            INSTANCE = null
+//        }
+//    }
 
     override fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         remote.automatic(success, failure)

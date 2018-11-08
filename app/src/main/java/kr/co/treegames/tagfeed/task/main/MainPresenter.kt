@@ -2,6 +2,7 @@ package kr.co.treegames.tagfeed.task.main
 
 import kr.co.treegames.tagfeed.data.source.AccountRepository
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
+import kr.co.treegames.tagfeed.data.source.UserRepository
 import java.util.*
 import javax.activation.DataHandler
 import javax.activation.FileDataSource
@@ -20,7 +21,8 @@ import javax.mail.internet.MimeMultipart
  * Description :
  */
 class MainPresenter(private val preferences: SharedPreferencesRepository,
-                    private val repository: AccountRepository,
+                    private val accountRepository: AccountRepository,
+                    private val userRepository: UserRepository,
                     val view: MainContract.View)
     : MainContract.Presenter {
     init {
@@ -28,9 +30,10 @@ class MainPresenter(private val preferences: SharedPreferencesRepository,
     }
 
     override fun start() {
+        view.showMessage(preferences.getString("test_key") ?: "test_key is null")
     }
     override fun signOut() {
-        repository.signOut()
+        accountRepository.signOut()
         view.startAccountActivity()
     }
     override fun sendEmail(title: String, contents: String, receiver: String, sender: String, passwordOfSender: String) {

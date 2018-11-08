@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.App
 import kr.co.treegames.tagfeed.R
+import kr.co.treegames.tagfeed.data.model.Const
+import kr.co.treegames.tagfeed.data.model.Key
 import kr.co.treegames.tagfeed.manage.AndroidRsaCipherHelper
 import kr.co.treegames.tagfeed.task.DefaultFragment
 import kr.co.treegames.tagfeed.task.account.AccountActivity
@@ -91,8 +93,10 @@ class MainFragment: DefaultFragment(), MainContract.View {
             R.id.btn_detect_shape -> {
             }
             R.id.btn_test -> {
+                //메일 전송 테스트
 //                presenter.sendEmail("메일 테스트 제목", "메일 테스트 내용", "", "", "")
 
+                //RSA 암복호화 예제
 //                activity?.run {
 //                    AndroidRsaCipherHelper.init(applicationContext)
 //                    if (AndroidRsaCipherHelper.isSupported) {
@@ -102,19 +106,20 @@ class MainFragment: DefaultFragment(), MainContract.View {
 //                    }
 //                }
 
-                val db = FirebaseFirestore.getInstance()
-                val manage: MutableMap<String, Any> = HashMap()
-                manage["sender_email"] = "develop.duck@gmail.com"
-                manage["sender_password"] = "test1q2w3e"
-
-                db.collection("tb_manage")
-                        .add(manage)
-                        .addOnSuccessListener {
-                            Logger.d("DocumentSnapshot added with ID: ${it.id}")
-                        }
-                        .addOnFailureListener { e ->
-                            Logger.e("Error adding document", e)
-                        }
+                //Firestore 테이블 생성(?)
+//                val db = FirebaseFirestore.getInstance()
+//                val manage: MutableMap<String, Any> = HashMap()
+//                manage["sender_email"] = "develop.duck@gmail.com"
+//                manage["sender_password"] = "test1q2w3e"
+//
+//                db.collection("tb_manage")
+//                        .add(manage)
+//                        .addOnSuccessListener {
+//                            Logger.d("DocumentSnapshot added with ID: ${it.id}")
+//                        }
+//                        .addOnFailureListener { e ->
+//                            Logger.e("Error adding document", e)
+//                        }
             }
         }
     }
@@ -139,6 +144,7 @@ class MainFragment: DefaultFragment(), MainContract.View {
 //
 //        return decryptedString
 //    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)

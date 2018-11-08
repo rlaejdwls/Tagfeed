@@ -1,7 +1,5 @@
 package kr.co.treegames.tagfeed.data.source.remote
 
-import androidx.annotation.VisibleForTesting
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
@@ -14,19 +12,22 @@ import kr.co.treegames.tagfeed.data.source.AccountDataSource
  *
  * Description : 로그인, 회원가입에 관련 리모트 데이터 소스
  */
-class AccountRemoteDataSource(private val auth: FirebaseAuth): AccountDataSource {
-    companion object {
-        private var INSTANCE: AccountRemoteDataSource? = null
+object AccountRemoteDataSource: AccountDataSource {
+    private val auth = FirebaseAuth.getInstance()
+//class AccountRemoteDataSource(private val auth: FirebaseAuth): AccountDataSource {
+//    companion object {
+//        private var INSTANCE: AccountRemoteDataSource? = null
+//
+//        @JvmStatic fun getInstance(): AccountRemoteDataSource {
+//            return INSTANCE ?: synchronized(AccountRemoteDataSource::javaClass) {
+//                AccountRemoteDataSource(FirebaseAuth.getInstance()).apply { INSTANCE = this }
+//            }
+//        }
+//        @VisibleForTesting fun clearInstance() {
+//            INSTANCE = null
+//        }
+//    }
 
-        @JvmStatic fun getInstance(): AccountRemoteDataSource {
-            return INSTANCE ?: synchronized(AccountRemoteDataSource::javaClass) {
-                AccountRemoteDataSource(FirebaseAuth.getInstance()).apply { INSTANCE = this }
-            }
-        }
-        @VisibleForTesting fun clearInstance() {
-            INSTANCE = null
-        }
-    }
     override fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         auth.currentUser?.let { User(it.uid, it.email, it.displayName) }?.also(success) ?: failure(-1, "You are not signed in")
     }

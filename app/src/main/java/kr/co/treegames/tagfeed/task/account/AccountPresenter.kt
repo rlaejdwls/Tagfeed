@@ -40,7 +40,14 @@ class AccountPresenter(private val preferences: SharedPreferencesRepository,
         })
     }
     override fun signInWithCredential(token: String) {
-
+        view.setLoadingIndicator(true)
+        repository.signInWithCredential(token, {
+            view.setLoadingIndicator(false)
+            view.startMainActivity()
+        }, { code, message ->
+            Logger.d("code:$code:message:$message")
+            view.setLoadingIndicator(false)
+        })
     }
     override fun signUp(account: Account) {
         if (!validation(account.email, account.pwd)) {
