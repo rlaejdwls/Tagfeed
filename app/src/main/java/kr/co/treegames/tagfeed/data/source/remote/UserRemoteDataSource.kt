@@ -8,8 +8,8 @@ import kr.co.treegames.tagfeed.data.source.UserDataSource
  *
  * Description :
  */
-object UserRemoteDataSource: UserDataSource {
-    override fun insert(user: User, success: (User) -> Unit, failure: (Int, String?) -> Unit) {
+object UserRemoteDataSource {
+    fun insert(user: User, success: (User) -> Unit, failure: (Int, String?) -> Unit) {
         success(user)
     }
 }

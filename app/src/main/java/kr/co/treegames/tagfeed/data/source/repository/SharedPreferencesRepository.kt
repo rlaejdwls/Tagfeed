@@ -1,6 +1,7 @@
-package kr.co.treegames.tagfeed.data.source
+package kr.co.treegames.tagfeed.data.source.repository
 
 import androidx.annotation.VisibleForTesting
+import kr.co.treegames.tagfeed.data.source.SharedPreferencesDataSource
 import kr.co.treegames.tagfeed.data.source.io.SharedPreferencesLocalDataSource
 
 /**
@@ -10,15 +11,16 @@ import kr.co.treegames.tagfeed.data.source.io.SharedPreferencesLocalDataSource
  */
 class SharedPreferencesRepository(private val local:SharedPreferencesLocalDataSource): SharedPreferencesDataSource {
     companion object {
-        private var INSTANCE: SharedPreferencesRepository? = null
+        private var instance: SharedPreferencesRepository? = null
 
         @JvmStatic fun getInstance(local: SharedPreferencesLocalDataSource): SharedPreferencesRepository {
-            return INSTANCE ?: synchronized(SharedPreferencesRepository::javaClass) {
-                SharedPreferencesRepository(local).apply { INSTANCE = this }
+            return instance
+                    ?: synchronized(SharedPreferencesRepository::javaClass) {
+                SharedPreferencesRepository(local).apply { instance = this }
             }
         }
         @VisibleForTesting fun clearInstance() {
-            SharedPreferencesRepository.INSTANCE = null
+            instance = null
         }
     }
     override fun put(key: String, strValue: String?, intValue: Int?, boolValue: Boolean?) {

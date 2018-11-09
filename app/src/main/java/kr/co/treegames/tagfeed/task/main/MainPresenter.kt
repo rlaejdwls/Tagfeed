@@ -1,19 +1,15 @@
 package kr.co.treegames.tagfeed.task.main
 
-import kr.co.treegames.tagfeed.data.source.AccountRepository
-import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
-import kr.co.treegames.tagfeed.data.source.UserRepository
+import kr.co.treegames.tagfeed.data.source.repository.AccountRepository
+import kr.co.treegames.tagfeed.data.source.repository.SharedPreferencesRepository
+import kr.co.treegames.tagfeed.data.source.repository.UserRepository
 import java.util.*
-import javax.activation.DataHandler
-import javax.activation.FileDataSource
 import javax.mail.Message
 import javax.mail.PasswordAuthentication
 import javax.mail.Session
 import javax.mail.Transport
 import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
-import javax.mail.internet.MimeMultipart
 
 /**
  * Created by Hwang on 2018-09-05.

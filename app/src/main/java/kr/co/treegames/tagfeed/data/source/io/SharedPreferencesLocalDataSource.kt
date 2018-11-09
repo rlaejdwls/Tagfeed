@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.VisibleForTesting
-import kr.co.treegames.tagfeed.data.model.Key
+import kr.co.treegames.tagfeed.data.model.Const
 import kr.co.treegames.tagfeed.data.source.SharedPreferencesDataSource
 
 /**
@@ -18,7 +18,7 @@ class SharedPreferencesLocalDataSource(private val preferences: SharedPreference
 
         @JvmStatic fun getInstance(context: Context): SharedPreferencesLocalDataSource {
             return instance ?: synchronized(SharedPreferencesLocalDataSource::javaClass) {
-                SharedPreferencesLocalDataSource(context.getSharedPreferences(Key.SharedPreferences.DEFAULT_NAME,
+                SharedPreferencesLocalDataSource(context.getSharedPreferences(Const.DEFAULT_NAME,
                         Activity.MODE_PRIVATE)).apply { instance = this }
             }
         }

@@ -10,12 +10,12 @@ import kr.co.treegames.tagfeed.R
  */
 object Const {
     val DOMAIN: String = App.get().resources.getString(R.string.app_domain_api)
+
+    /* SharedPreferences */
+    const val DEFAULT_NAME: String = "default_name"
 }
-interface Key {
-    object SharedPreferences {
-        const val DEFAULT_NAME: String = "default_name"
-        const val UUID: String = "UUID"
-    }
+object Key {
+    const val USER_SESSION_DATA: String = "USER_SESSION_DATA"
 }
 object Regex {
     const val EMAIL: String = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"

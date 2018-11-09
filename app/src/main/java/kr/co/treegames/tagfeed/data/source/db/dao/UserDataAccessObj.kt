@@ -1,11 +1,8 @@
 package kr.co.treegames.tagfeed.data.source.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import io.reactivex.Flowable
-import io.reactivex.Single
 import kr.co.treegames.tagfeed.data.model.User
 
 /**
@@ -17,10 +14,21 @@ import kr.co.treegames.tagfeed.data.model.User
 interface UserDataAccessObj {
     @Query("SELECT * FROM user")
     fun getUsers(): Flowable<User>
-
     @Query("SELECT * FROM user WHERE uuid = :uuid")
-    fun getUser(uuid: String): Single<User>
+    fun getUser(uuid: String): User
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: User)
+    @Insert(onConflict=OnConflictStrategy.REPLACE)
+    fun insert(user: User): Long
+    @Insert(onConflict=OnConflictStrategy.REPLACE)
+    fun insertAll(vararg user: User)
+
+    @Update
+    fun update(user: User)
+    @Update
+    fun updateAll(vararg user: User)
+
+    @Delete
+    fun delete(user: User)
+    @Delete
+    fun deleteAll(vararg user: User)
 }

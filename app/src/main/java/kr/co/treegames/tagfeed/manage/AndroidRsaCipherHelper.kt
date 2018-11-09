@@ -34,10 +34,7 @@ object AndroidRsaCipherHelper {
     private const val VALIDITY_YEARS = 25
 
     private const val KEY_PROVIDER_NAME = "AndroidKeyStore"
-    private const val CIPHER_ALGORITHM =
-            "${KeyProperties.KEY_ALGORITHM_RSA}/" +
-                    "${KeyProperties.BLOCK_MODE_ECB}/" +
-                    KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1
+    private const val CIPHER_ALGORITHM = "RSA/ECB/PKCS1Padding"
 
     private lateinit var keyEntry: KeyStore.Entry
 
@@ -45,7 +42,7 @@ object AndroidRsaCipherHelper {
     @Suppress("ObjectPropertyName")
     private var _isSupported = false
 
-    val isSupported: Boolean
+    private val isSupported: Boolean
         get() = _isSupported
 
     internal fun init(applicationContext: Context) {
@@ -113,24 +110,8 @@ object AndroidRsaCipherHelper {
     }
 
     private fun initAndroidL(alias: String): Boolean {
-//        val start = Calendar.getInstance()
-//        val end = Calendar.getInstance()
-//        end.add(Calendar.YEAR, 1)
-//        val spec = KeyPairGeneratorSpec.Builder(App.get())
-//                .setAlias(alias)
-//                .setSubject(X500Principal("CN=Your Company ," +
-//                        " O=Your Organization" +
-//                        " C=Your Coountry"))
-//                .setSerialNumber(BigInteger.ONE)
-//                .setStartDate(start.time)
-//                .setEndDate(end.time)
-//                .build()
-//        val generator = KeyPairGenerator.getInstance(KEY_ALGORITHM_RSA, "AndroidKeyStore")
-//
-//        generator.initialize(spec)
-//        generator.generateKeyPair()
         try {
-            with(KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, KEY_PROVIDER_NAME)) {
+            with(KeyPairGenerator.getInstance("RSA", KEY_PROVIDER_NAME)) {
                 val start = Calendar.getInstance(Locale.ENGLISH)
                 val end = Calendar.getInstance(Locale.ENGLISH).apply { add(Calendar.YEAR, VALIDITY_YEARS) }
                 val spec = KeyPairGeneratorSpec.Builder(App.get())
@@ -144,8 +125,7 @@ object AndroidRsaCipherHelper {
                 initialize(spec)
                 generateKeyPair()
             }
-            Logger.i(String.format("Random keypair with %s is created, which is old fashioned",
-                    KeyProperties.KEY_ALGORITHM_RSA))
+            Logger.i(String.format("Random keypair with %s is created, which is old fashioned", "RSA"))
 
             return true
         } catch (e: GeneralSecurityException) {

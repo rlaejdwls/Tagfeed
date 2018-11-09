@@ -12,23 +12,10 @@ import kr.co.treegames.tagfeed.data.source.AccountDataSource
  *
  * Description : 로그인, 회원가입에 관련 리모트 데이터 소스
  */
-object AccountRemoteDataSource: AccountDataSource {
+object AccountRemoteDataSource {
     private val auth = FirebaseAuth.getInstance()
-//class AccountRemoteDataSource(private val auth: FirebaseAuth): AccountDataSource {
-//    companion object {
-//        private var INSTANCE: AccountRemoteDataSource? = null
-//
-//        @JvmStatic fun getInstance(): AccountRemoteDataSource {
-//            return INSTANCE ?: synchronized(AccountRemoteDataSource::javaClass) {
-//                AccountRemoteDataSource(FirebaseAuth.getInstance()).apply { INSTANCE = this }
-//            }
-//        }
-//        @VisibleForTesting fun clearInstance() {
-//            INSTANCE = null
-//        }
-//    }
 
-    override fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    fun automatic(success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         auth.currentUser?.let { User(it.uid, it.email, it.displayName) }?.also(success) ?: failure(-1, "You are not signed in")
     }
 //    ("ERROR_INVALID_CUSTOM_TOKEN", "The custom token format is incorrect. Please check the documentation."));
@@ -50,7 +37,7 @@ object AccountRemoteDataSource: AccountDataSource {
     /**
      * Exception 참고 자료 : https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuthException
      */
-    override fun signInWithEmailAndPassword(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    fun signInWithEmailAndPassword(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         account?.run { auth.signInWithEmailAndPassword(email, pwd)
                 .addOnSuccessListener { automatic(success, failure) }
                 .addOnFailureListener { e -> when (e) {
@@ -62,7 +49,7 @@ object AccountRemoteDataSource: AccountDataSource {
                     else -> failure(-3, e.message)
                 }}}
     }
-    override fun signInWithCredential(token: String, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    fun signInWithCredential(token: String, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         val credential = GoogleAuthProvider.getCredential(token, null)
         auth.signInWithCredential(credential)
                 .addOnSuccessListener { automatic(success, failure) }
@@ -71,7 +58,7 @@ object AccountRemoteDataSource: AccountDataSource {
                     else -> failure(-4, e.message)
                 }}
     }
-    override fun signUp(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
+    fun signUp(account: Account?, success: (User?) -> Unit, failure: (Int, String?) -> Unit) {
         account?.run { auth.createUserWithEmailAndPassword(email, pwd)
                 .addOnSuccessListener { automatic(success, failure) }
                 .addOnFailureListener { e -> when (e) {
@@ -82,7 +69,7 @@ object AccountRemoteDataSource: AccountDataSource {
                     else -> { failure(-2, e.message) }
                 }}}
     }
-    override fun signOut() {
+    fun signOut() {
         auth.signOut()
     }
 }

@@ -1,10 +1,9 @@
 package kr.co.treegames.tagfeed.task.account
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kr.co.treegames.core.manage.Logger
 import kr.co.treegames.tagfeed.data.model.Account
-import kr.co.treegames.tagfeed.data.source.AccountRepository
-import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
+import kr.co.treegames.tagfeed.data.source.repository.AccountRepository
+import kr.co.treegames.tagfeed.data.source.repository.SharedPreferencesRepository
 import kr.co.treegames.tagfeed.extension.checkPassword
 import kr.co.treegames.tagfeed.extension.isEmail
 import kr.co.treegames.tagfeed.manage.ResourceManager

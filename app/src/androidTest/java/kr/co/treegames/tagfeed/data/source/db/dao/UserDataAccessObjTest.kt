@@ -1,10 +1,10 @@
 package kr.co.treegames.tagfeed.data.source.db.dao
 
+import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import kr.co.treegames.tagfeed.data.model.User
 import kr.co.treegames.tagfeed.manage.db.ORDBM
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,19 +20,17 @@ class UserDataAccessObjTest {
     private lateinit var userDao: UserDataAccessObj
 
     @Before fun setup() {
-        userDao = ORDBM.getInstance().userDao()
+        userDao = ORDBM.getInstance(InstrumentationRegistry.getTargetContext()).userDao()
     }
 
+    @Throws(Exception::class)
     @Test fun insertUser() {
-        userDao.insert(user)
+        val result = userDao.insert(user)
+        assertTrue(result > 0)
 
         val selectUser = userDao.getUser(user.uuid)
         assertNotNull(selectUser)
-        selectUser.subscribe { it ->
-            assertTrue(it.uuid == user.uuid)
-        }
-    }
-    @Test fun alwaysFail() {
-        assertTrue(false)
+        assertEquals(selectUser.uuid, user.uuid)
+        userDao.delete(user)
     }
 }

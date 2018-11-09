@@ -1,4 +1,4 @@
-package kr.co.treegames.tagfeed.manage.db
+package kr.co.treegames.tagfeed.manage.runner
 
 import android.os.Handler
 import android.os.Looper
@@ -8,22 +8,12 @@ import java.util.concurrent.Executors
 /**
  * Created by Hwang on 2018-11-08.
  *
- * Description :
+ * Description : 풀링 쓰레드
  */
-class QueueRunner {
-    private val runnerCount: Int = 3
-
-    private val local: Executor
-    private val main: Executor
-
-    init {
-        local = Executors.newFixedThreadPool(runnerCount)
-        main = MainThreadExecutor()
-    }
-
-    fun local(): Executor = local
-    fun main(): Executor = main
-
+class PoolRunner(
+        val local: Executor = Executors.newFixedThreadPool(5),
+        val main: Executor = MainThreadExecutor()
+) {
     class MainThreadExecutor: Executor {
         private val mainThreadHandler = Handler(Looper.getMainLooper())
         override fun execute(command: Runnable?) { mainThreadHandler.post(command) }

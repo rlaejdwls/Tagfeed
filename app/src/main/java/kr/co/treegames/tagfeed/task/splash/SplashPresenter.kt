@@ -1,8 +1,8 @@
 package kr.co.treegames.tagfeed.task.splash
 
 import kr.co.treegames.core.manage.Logger
-import kr.co.treegames.tagfeed.data.source.AccountRepository
-import kr.co.treegames.tagfeed.data.source.SharedPreferencesRepository
+import kr.co.treegames.tagfeed.data.source.repository.AccountRepository
+import kr.co.treegames.tagfeed.data.source.repository.SharedPreferencesRepository
 import kr.co.treegames.tagfeed.manage.GoogleApiManager
 
 /**
