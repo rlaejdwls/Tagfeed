@@ -30,7 +30,7 @@ abstract class ORDBM: RoomDatabase() {
 
         @JvmStatic fun getInstance(context: Context): ORDBM {
             return instance ?: synchronized(ORDBM::class) {
-                Room.databaseBuilder(context.applicationContext, ORDBM::class.java, "tagfeed.db")
+                Room.databaseBuilder(context.applicationContext ?: context, ORDBM::class.java, "tagfeed.db")
 //                        .addMigrations(migration_1_2)
                         .fallbackToDestructiveMigration()
                         .build().apply { instance = this }

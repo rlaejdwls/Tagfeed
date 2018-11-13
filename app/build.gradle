@@ -4,6 +4,7 @@ apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'de.mannodermaus.android-junit5'
 
 android {
     compileSdkVersion rootProject.compile_sdk_version.toInteger()
@@ -15,7 +16,7 @@ android {
         minSdkVersion rootProject.min_sdk_version.toInteger()
         targetSdkVersion rootProject.target_sdk_version.toInteger()
         versionCode 1
-        versionName "0.0.02"
+        versionName "0.0.03"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -86,8 +87,17 @@ dependencies {
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //Test
-    testImplementation 'junit:junit:4.12'
+    // (Required) Writing and executing Unit Tests on the JUnit Platform
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+    // (Optional) If you need "Parameterized Tests"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.3.1"
+    // (Optional) If you also have JUnit 4-based tests
+    testImplementation "junit:junit:4.12"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.3.1"
+
     testImplementation "org.mockito:mockito-core:2.23.0"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0"
     implementation "com.android.support.test.espresso:espresso-idling-resource:3.0.2"
     androidTestImplementation "org.mockito:mockito-android:2.8.47"
     androidTestImplementation 'com.android.support.test:runner:1.1.0'

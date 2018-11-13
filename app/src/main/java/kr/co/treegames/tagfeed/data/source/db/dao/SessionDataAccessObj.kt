@@ -13,7 +13,7 @@ import kr.co.treegames.tagfeed.data.model.Session
 @Dao
 interface SessionDataAccessObj {
     @Query("SELECT * FROM session WHERE sessionKey = \"" + Key.USER_SESSION_DATA + "\"")
-    fun getSession(): LiveData<Session>
+    fun getSession(): Session?
 
     @Insert(onConflict= OnConflictStrategy.REPLACE)
     fun insert(session: Session): Long
